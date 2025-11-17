@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Waqar! 🎂</title>
+    <style>
+        :root{
+            --bg: #fff8fb;
+            --accent: #ff6fa3; 
+            --text: #2c3e50; 
+            --light-card: #ffeef2; 
+            --dark-card: #f8c8d8; 
+        }
+
+        /* --- GLOBAL RESET & BASE --- */
+        body, html{
+            margin: 0; padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: var(--bg);
+            min-height: 100vh; 
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* 1. BACKGROUND PATTERN (Subtle Texture) */
+        body {
+            background-image: radial-gradient(var(--accent) 1px, transparent 0);
+            background-size: 20px 20px;
+            background-color: var(--bg);
+        }
+
+        /* --- FLOATING HEART ANIMATION --- */
+        .heart{
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: var(--accent);
+            transform: translateY(100vh) rotate(45deg);
+            animation: float 12s linear infinite;
+            z-index: 1;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.1));
+        }
+        .heart::before, .heart::after{
+            content: "";
+            position: absolute;
+            width: 15px; height: 15px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+        .heart::before{top: -7.5px; left: 0;}
+        .heart::after{left: 7.5px; top: 0;}
+
+        .heart:nth-child(1) { left: 10%; animation-duration: 10s; animation-delay: 0s; }
+        .heart:nth-child(2) { left: 30%; animation-duration: 15s; animation-delay: 3s; width: 20px; height: 20px; }
+        .heart:nth-child(3) { left: 50%; animation-duration: 11s; animation-delay: 6s; }
+        .heart:nth-child(4) { left: 70%; animation-duration: 13s; animation-delay: 1s; width: 18px; height: 18px; }
+
+        @keyframes float{
+            0%{ transform: translateY(100vh) rotate(45deg) translateX(0px); opacity: 0.8;}
+            50%{ transform: translateY(50vh) rotate(45deg) translateX(50px); opacity: 1;}
+            100%{ transform: translateY(-50px) rotate(45deg) translateX(-50px); opacity: 0;}
+        }
+
+        /* --- STAGE & SLIDE STRUCTURE --- */
+        .stage{
+            position: relative;
+            min-height: 100vh; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+            overflow: hidden;
+        }
+
+        .slide{
+            width: 100%;
+            min-height: 100vh;
+            position: absolute;
+            top: 0; left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            
+            opacity: 0;
+            transform: translateX(100%);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .slide.active{
+            opacity: 1;
+            transform: translateX(0);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* --- COUNTDOWN STYLING (Slide 0) --- */
+        .countdown-card {
+            background: var(--dark-card); 
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.7);
+            border: 5px solid var(--accent);
+            /* Reduced max width slightly for better fit */
+            max-width: 400px; 
+            padding: clamp(20px, 5vw, 40px);
+        }
+        .calendar-img {
+            /* Kept calendar size small */
+            max-width: 70%; 
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px; /* Slightly reduced margin */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: block;
+        }
+        #countdown {
+            font-size: clamp(25px, 8vw, 50px); /* Reduced font size for better fit */
+            font-weight: bold;
+            color: var(--text);
+            display: flex;
+            gap: clamp(8px, 1.5vw, 15px); /* Reduced gap */
+            justify-content: center;
+            margin-top: 20px; /* Reduced margin */
+            line-height: 1.1;
+        }
+        .countdown-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 12px; /* Reduced padding */
+            background-color: #ffffff; 
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            min-width: 50px; /* Reduced min width */
+            border: 1px solid var(--accent);
+        }
+        .countdown-unit span.value {
+            color: var(--accent);
+            font-size: 1.6em; /* Reduced value font size */
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .countdown-unit span.label {
+            font-size: 0.55em; /* Reduced label font size */
+            font-weight: normal;
+            margin-top: 3px;
+            color: var(--text);
+            text-transform: uppercase;
+        }
+
+        /* Blooper Effect */
+        @keyframes blooper {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.08) rotate(1deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        .countdown-unit.jiggle {
+            animation: blooper 0.3s ease-in-out;
+        }
+        .countdown-text{
+            font-size: clamp(20px, 4vw, 30px);
+            color: var(--text);
+            margin-top: 15px; /* Reduced margin */
+            font-style: italic;
+        }
+        
+        /* Removed .countdown-text as it's being removed from HTML */
+
+        /* --- TYPOGRAPHY & CARD (General) --- */
+        h1{color: var(--accent); font-size: clamp(28px, 5vw, 42px); margin: 15px 0 8px; text-align: center; z-index: 2;}
+        p{color: var(--text); font-size: clamp(16px, 3vw, 20px); text-align: center; margin: 8px 0 25px; z-index: 2;}
+
+        .card{
+            background: #fff;
+            padding: clamp(25px, 5vw, 40px);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(255, 111, 163, 0.3);
+            max-width: 90%;
+            width: 450px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 2;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 111, 163, 0.45);
+        }
+
+        /* --- SLIDE 3 (Waqar Hero) --- */
+        #slide3 .hero-img{
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- SLIDE 1/2 (Video Screens) --- */
+        #slide1 .animated-video, #slide2 .animated-video {
+            max-width: 80%; 
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            margin: 20px 0;
+            object-fit: cover; 
+        }
+
+        /* --- SLIDE 4: Waqar Pics & Corners --- */
+        .waqar-pics{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+        .waqar-pics img{
+            width: 100px;
+            height: 100px; 
+            object-fit: cover; 
+            object-position: 50% 10%; 
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+        .waqar-pics img:hover {
+            transform: scale(1.1);
+        }
+
+        .gomma-corner{
+            width: 50px;
+            height: 50px;
+            border-radius: 6px;
+            position: absolute;
+            object-fit: cover;
+        }
+        .top-left{top: 10px; left: 10px;}
+        .top-right{top: 10px; right: 10px;}
+        .bottom-left{bottom: 10px; left: 10px;}
+        .bottom-right{bottom: 10px; right: 10px;}
+
+        /* --- SLIDE 5: PUBG Grid --- */
+        .pubg-grid{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 8px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+        .pubg-grid img{
+            width: 100%;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* --- SLIDE 6: Compliments List --- */
+        .compliment-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+            width: 100%;
+            text-align: left;
+        }
+        .compliment-list li {
+            background-color: var(--light-card);
+            color: var(--text);
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            box-shadow: inset 0 0 5px rgba(255, 111, 163, 0.1);
+            transition: background-color 0.3s;
+        }
+        .compliment-list li::before {
+            content: "✨";
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        /* --- SLIDE 7: Final Message Box --- */
+        .final-message {
+            background: var(--light-card);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid var(--accent);
+            margin-top: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: left;
+        }
+        .final-message p {
+            margin-top: 0;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        .final-message .signature {
+            display: block;
+            text-align: right;
+            font-style: italic;
+            color: var(--accent);
+            margin-top: 15px;
+        }
+
+        /* --- NAVIGATION BUTTONS --- */
+        .nav-btn{
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--accent);
+            border: none;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5em;
+            transition: background 0.3s, transform 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        .nav-btn:hover{
+            background: #e65f92;
+            transform: translateY(-50%) scale(1.05);
+        }
+        #prevBtn{left: 10px;}
+        #nextBtn{right: 10px;}
+    </style>
+</head>
+<body>
+
+<div class="stage">
+    <div class="heart" style="left: 15%;"></div>
+    <div class="heart" style="left: 45%;"></div>
+    <div class="heart" style="left: 75%;"></div>
+    <div class="heart" style="left: 90%;"></div>
+
+    <div class="slide active" id="slide0">
+        <div class="card countdown-card" id="countdown-container">
+            <h1>It's Almost Time! ⏳</h1>
+            <img src="calender.jpg" alt="November 2025 Calendar" class="calendar-img">
+            <div id="countdown">
+                </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide1">
+        <div class="card">
+            <h1>Wake Up, Birthday Boy! ⏰</h1>
+            <video class="animated-video" autoplay loop muted playsinline>
+                <source src="gif1.mp4" type="video/mp4">
+                Your browser does support the video tag.
+            </video>
+            <p>Get up, it's your birthday! Time to celebrate (and endure my teasing) 😉</p>
+        </div>
+    </div>
+    
+    <div class="slide" id="slide2">
+        <div class="card">
+            <h1>Hope Your Day is Sweet! 🎂</h1>
+            <video class="animated-video" autoplay loop muted playsinline>
+                <source src="gif5.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <p>HERE IS YOUR YUMMY CAKE ❤️</p>
+        </div>
+    </div>
+
+    <div class="slide" id="slide3">
+        <h1>🎉 Happy Birthday Waqar! 🎉</h1>
+        <p>Wishing you a day full of joy and love 💖</p>
+        <img src="waqar.jpg" class="hero-img" alt="Waqar">
+    </div>
+
+    <div class="slide" id="slide4">
+        <div class="card">
+            <h1>Birthday Boy! 🥳</h1> 
+            <p>A collection of great memories and cuteness.</p>
+            <div class="waqar-pics">
+                <img src="waqar2.jpg" alt="w2">
+                <img src="waqar3.jpg" alt="w3">
+                <img src="waqar4.jpg" alt="w4">
+                <img src="waqar5.jpg" alt="w5">
+            </div>
+            <img src="pg1.jpg" class="gomma-corner top-left" alt="Goma Corner 1">
+            <img src="pg2.jpg" class="gomma-corner top-right" alt="Goma Corner 2">
+            <img src="pgcake.jpg" class="gomma-corner bottom-left" alt="Goma Corner 3">
+            <img src="pg3.jpg" class="gomma-corner bottom-right" alt="Goma Corner 4"> 
+        </div>
+    </div>
+
+
+    <div class="slide" id="slide5">
+        <div class="card">
+            <h1>Our Gaming Memories 🎮</h1> 
+            <p>Cheers to the squad wins and the fun times!</p>
+            <div class="pubg-grid">
+                <img src="memory1.jpg" alt="PUBG memory 1"> 
+                <img src="memory2.jpg" alt="PUBG memory 2">
+                <img src="memory3.jpg" alt="PUBG memory 3">
+                <img src="memory4.jpg" alt="PUBG memory 4">
+                <img src="memory5.jpg" alt="PUBG memory 5">
+                <img src="memory6.jpg" alt="PUBG memory 6">
+                <img src="memory7.jpg" alt="PUBG memory 7">
+                <img src="memory8.jpg" alt="PUBG memory 8">
+                <img src="memory9.jpg" alt="PUBG memory 9">
+                <img src="memory10.jpg" alt="PUBG memory 10">
+                <img src="memory11.jpg" alt="PUBG memory 11">
+                <img src="memory12.jpg" alt="PUBG memory 12">
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide" id="slide6">
+        <div class="card">
+            <h1>Top Tier Compliments! 😎</h1>
+            <p>Reasons why you're awesome:</p>
+            <ul class="compliment-list">
+                <li>You're my **favorite person**, my **healer**, and my **therapist**. 🤍</li>
+                <li>I absolutely **love to tease you**, and your **roasting** always makes me laugh at myself! 😂</li>
+                <li>You are not just my **BSF**, you are my **brother**, my **family**, my **everything**. 🫂</li>
+                <li>You **always stand by me** through thick and thin, no matter what.</li>
+                <li>Thank you for always guiding me—your advice is invaluable.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="slide" id="slide7">
+        <div class="card">
+            <h1>Here's To Your Next Chapter 🥂</h1>
+            <div class="final-message">
+                <p>
+                    Dear Waqar, on your special day, I hope you take a moment to reflect on how much you’ve accomplished. May the coming year bring you immense success, health, and happiness in all your endeavors, whether in your career, gaming, or personal life.
+                </p>
+                <p style="font-weight: bold; margin-bottom: 0;">Keep shining brightly!</p>
+                <span class="signature">Your's truly emily</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<button class="nav-btn" id="prevBtn">❮</button>
+<button class="nav-btn" id="nextBtn">❯</button>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    let current = 0;
+    const TOTAL_SLIDES = slides.length;
+
+    // --- SLIDE NAVIGATION LOGIC ---
+    function showSlide(idx){
+        slides.forEach((s,i) => {
+            if (s.classList.contains('active')) {
+                s.classList.remove('active');
+            }
+            if (i === idx) {
+                setTimeout(() => {
+                    s.classList.add('active');
+                }, 10);
+                
+                // --- VIDEO PLAYBACK LOGIC ---
+                // Slides 1 (Wakeup) and 2 (Cake) contain videos
+                if (s.id === 'slide1' || s.id === 'slide2') {
+                    const videoElement = s.querySelector('.animated-video');
+                    if (videoElement) {
+                         // Attempt to play the video; catch potential autoplay errors
+                         videoElement.play().catch(error => {
+                            console.log("Autoplay prevented:", error);
+                        });
+                    }
+                }
+            }
+        });
+        current = idx;
+    }
+
+    // --- COUNTDOWN LOGIC (Slide 0) ---
+    function startCountdown(targetDate) {
+        const countdownElement = document.getElementById('countdown');
+        const units = [
+            { id: 'days', label: 'Days' },
+            { id: 'hours', label: 'Hours' },
+            { id: 'minutes', label: 'Minutes' },
+            { id: 'seconds', label: 'Seconds' }
+        ];
+
+        // Initialize countdown display structure
+        units.forEach(unit => {
+            const div = document.createElement('div');
+            div.classList.add('countdown-unit');
+            div.id = `unit-${unit.id}`;
+            div.innerHTML = `<span class="value">00</span><span class="label">${unit.label}</span>`;
+            countdownElement.appendChild(div);
+        });
+
+        const interval = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Function to update unit and apply jiggle effect
+            const updateUnit = (unitId, value) => {
+                const unit = document.getElementById(`unit-${unitId}`);
+                const valueElement = unit.querySelector('.value');
+                const formattedValue = String(value).padStart(2, '0');
+                
+                if (valueElement.textContent !== formattedValue) {
+                    unit.classList.add('jiggle');
+                    setTimeout(() => unit.classList.remove('jiggle'), 300); 
+                    valueElement.textContent = formattedValue;
+                }
+            };
+            
+            if (distance < 0) {
+                clearInterval(interval);
+                // Countdown finished, transition to the next slide (Slide 1: Wakeup)
+                showSlide(1); 
+                document.getElementById('countdown-container').innerHTML = '<h1>It\'s Here! Happy Birthday! 🥳</h1>';
+                return;
+            }
+
+            updateUnit('days', days);
+            updateUnit('hours', hours);
+            updateUnit('minutes', minutes);
+            updateUnit('seconds', seconds);
+
+        }, 1000);
+    }
+    
+    // Set the target date (November 18th, 2025)
+    const targetDate = new Date("2025-11-18T00:00:00").getTime(); 
+
+    // Initial load
+    showSlide(current);
+    startCountdown(targetDate);
+
+
+    // --- EVENT LISTENERS ---
+    document.getElementById('prevBtn').addEventListener('click', ()=>{
+        showSlide((current - 1 + TOTAL_SLIDES) % TOTAL_SLIDES);
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', ()=>{
+        showSlide((current + 1) % TOTAL_SLIDES);
+    });
+</script>
+
+</body>
+</html>
